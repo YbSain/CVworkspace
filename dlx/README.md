@@ -29,7 +29,7 @@
 
 ### 바로 종료하지 않는 이유
 
-바로 종료하지 않는 이유는 찾아보니, **signalHandler** 함수 호출 이후에도 루프가 한번 적용된 것 같다.
+바로 종료하지 않는 이유는 if문에 도달하기 전에 cin에서 코드가 진행중이기 때문이다.
 
          Dxl mx;
          void ctrlc(int){ ctrl_c_pressed = true; mx.close(), exit(true);}
