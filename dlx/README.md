@@ -29,4 +29,9 @@
 
 ### 바로 종료하지 않는 이유
 
+바로 종료하지 않는 이유는 찾아보니, **signalHandler** 함수 호출 이후에도 루프가 한번 적용된 것 같다.
 
+         Dxl mx;
+         void ctrlc(int){ ctrl_c_pressed = true; mx.close(), exit(true);}
+
+**Dxl mx;** 는 전역변수로, **void ctrlc**는 내부에 **exit, mx.close**를 추가하여 바로 종료할 수 있게 만들었다.
