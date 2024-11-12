@@ -1,14 +1,15 @@
 CX = g++
 CXFLAGS = -g -Wall
-CVFLAGS = `pkg-config opencv4 --cflags --libs`
+DXLFLAGS = -I/usr/local/include/dynamixel_sdk -ldxl_x64_cpp
 
-SRCS = main.cpp
-TARGET = camera
-
-$(TARGET):$(SRCS)
-	$(CX) $(CXFLAGS) -o $(TARGET) $(SRCS) $(CVFLAGS)
-
+TARGET = dxl
+OBJS = main.o dxl.o
+$(TARGET) : $(OBJS)
+		$(CX) -o $(TARGET) $(OBJS) $(DXLFLAGS)
+main.o : main.cpp
+		$(CX) $(CXFLAGS) -c main.cpp $(DXLFLAGS)
+dxl.o : dxl.hpp dxl.cpp
+		$(CX) $(CXFLAGS) -c dxl.cpp $(DXLFLAGS)
 .PHONY: clean
-
 clean:
-	rm -f $(OBJS) $(TARGET)
+		rm -rf $(TARGET) $(OBJS)
