@@ -27,8 +27,6 @@
 
 ![image](https://github.com/user-attachments/assets/4d07fa2f-89fe-4f66-851c-2ffc7c5dde0a)
 
-## 실습과제 1
-
 ### 바로 종료하지 않는 이유
 
 바로 종료하지 않는 이유는 if문에 도달하기 전에 cin에서 코드가 진행중이기 때문이다.
