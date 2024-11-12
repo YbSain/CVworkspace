@@ -35,3 +35,8 @@
          void ctrlc(int){ ctrl_c_pressed = true; mx.close(), exit(true);}
 
 **Dxl mx;** 는 전역변수로, **void ctrlc**는 내부에 **exit, mx.close**를 추가하여 바로 종료할 수 있게 만들었다.
+
+![image](https://github.com/user-attachments/assets/7081835d-abf9-40cd-8a27-13be426b4c6a)
+
+**mx.close**작업을 하지 않으니, 코드는 종료되어도 기계가 계속 움직여서 수정한 것임.
+
