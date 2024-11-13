@@ -12,7 +12,7 @@ https://github.com/YbSain/CVworkspace/blob/2df4ee9f1ff04aa0fc901310740f546b9d71e
 1. ```nvarguscamerasrc``` NVIDIA사의 Argus카메라 드라이버를 이용하여 카메라 데이터를 캡쳐하는 사항이다.    
 2. ```sensor-id=0``` 2번 문단은 해당부분은 사용하려는 카메라 장치의 id를 나타낸다.(0번 카메라 센서 사용)      
 
-
+## 
 
        video/x-raw(memory:NVMM), width=(int)640, height=(int)360, format=(string)NV12, framerate=(fraction)30/1
 
