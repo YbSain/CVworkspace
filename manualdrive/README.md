@@ -14,7 +14,7 @@ https://github.com/YbSain/CVworkspace/blob/2df4ee9f1ff04aa0fc901310740f546b9d71e
 
 ## 
 
-       video/x-raw(memory:NVMM), width=(int)640, height=(int)360, format=(string)NV12, framerate=(fraction)30/1
+      video/x-raw(memory:NVMM), width=(int)640, height=(int)360, format=(string)NV12, framerate=(fraction)30/1
 
 
 2열 부분의 **video/x-raw(memory:NVMM)** 는 __NVMM__ 메모리 유형을 사용하여 비디오 데이터를 메모리에 할당한다.    
