@@ -25,5 +25,14 @@ NVMM은 NVIDIA메모리로, GPU가 더 빠르게 접근하도록 최적화 된 �
 1. ```nvvidconv```는 비디오 변환 요소로, 비디오 스트림을 변환한다.    
 2. ```flip-method=0```은 비디오 프레임을 뒤집지 않도록 설정함.(90, 180, 또는 수평/수직 뒤집기가 가능함)    
 
+## 속도조절
+https://github.com/YbSain/CVworkspace/blob/2df4ee9f1ff04aa0fc901310740f546b9d71ef3f/manualdrive/main.cpp#L72-L84
 
+속도 조절에 관한 코드이다.
 ### 코드에 영상파일저장 코드 추가하기
+
+     VideoWriter savefile("manualdrive.avi", VideoWriter::fourcc('X', '2', '6', '4'), (double)30, true);
+     savefile.write(frame);
+
+두 줄을 적절한 위치에 배정해서 영상 파일로 저장할 수 있다.
+
