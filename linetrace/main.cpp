@@ -10,7 +10,7 @@ void ctrlc(int) {
 }
 int main(void) {
     TickMeter tm;       
-    //¿øº»
+    //ì›ë³¸
     VideoCapture cap("5_lt_cw_100rpm_out.mp4");
     if (!cap.isOpened()) { cerr << "Video Open Failed!" << endl; return -1; }
     
@@ -22,8 +22,8 @@ int main(void) {
         if (frame.empty()) {
             break;
         }
-        //ÀüÃ³¸®
-        //Roi¹üÀ§±¸ÇÏ±â
+        //ì „ì²˜ë¦¬
+        //Roië²”ìœ„êµ¬í•˜ê¸°
         int x = 0, y = 270, width = frame.cols, height = 90;
         Rect Roi(x, y, width, height);
 
@@ -34,9 +34,9 @@ int main(void) {
 
         Mat Roiframe = frame(Roi);
         
-        //grayScale ±¸ÇÏ±â
+        //grayScale êµ¬í•˜ê¸°
         cvtColor(Roiframe, gray, COLOR_BGR2GRAY);
-        ////³ëÀÌÁî Áö¿ì±â
+        ////ë…¸ì´ì¦ˆ ì§€ìš°ê¸°
         //int num = (int)(gray.total() * 0.1);
         //for (int i = 0; i < num; i++) {
         //    int x = rand() % gray.cols;
@@ -45,26 +45,26 @@ int main(void) {
         //}
         //Mat noiseremove;
         //medianBlur(gray, noiseremove, 3);
-        //ÀÏÁ¤ÇÑ ¹à±â Á¶ÀıÀ» À§ÇÑ Æò±Õ ¹à±â °ª ±¸ÇÏ±â
-        // ºí·¯ Ã³¸®ÇÑ ¿µ»óÀÇ Æò±Õ °ª ¹à±â
+        //ì¼ì •í•œ ë°ê¸° ì¡°ì ˆì„ ìœ„í•œ í‰ê·  ë°ê¸° ê°’ êµ¬í•˜ê¸°
+        // ë¸”ëŸ¬ ì²˜ë¦¬í•œ ì˜ìƒì˜ í‰ê·  ê°’ ë°ê¸°
         Scalar meanValue = mean(gray);
         cout << "mean1:" << meanValue[0] << endl;
-        // ¸ñÇ¥ °ªÀ» ÁöÁ¤ÇÑ µÚ < ÀÔ·Â¿µ»óÀÇ ÇÈ¼¿°ª + (¿øÇÏ´Â Æò±Õ ¹à±â °ª - ÀÔ·Â¿µ»óÀÇ Æò±Õ ¹à±â)
+        // ëª©í‘œ ê°’ì„ ì§€ì •í•œ ë’¤ < ì…ë ¥ì˜ìƒì˜ í”½ì…€ê°’ + (ì›í•˜ëŠ” í‰ê·  ë°ê¸° ê°’ - ì…ë ¥ì˜ìƒì˜ í‰ê·  ë°ê¸°)
         double currentBrightness = meanValue[0];
         double targetBrightness = 100.0;
         double adjustment = (targetBrightness - currentBrightness);
         Mat fixbrightnessImg = gray.clone();
-        //convertTo¸¦ »ç¿ëÇØ¼­ -1·Î ¿øº»°ú µ¿ÀÏÇÑ Å¸ÀÔÀ» »ç¿ë, 1À» °öÇÏ¿© ÇÈ¼¿ °ªÀ» À¯ÁöÇÑ Ã¤·Î
-        //adjustment Áï ¸ñÇ¥ÇÏ´Â ¹à±â¸¦ ¸¸µé±â À§ÇÑ °ªÀ» ´õÇÔ.(¸ñÇ¥ ¹à±â - ÇöÀç Æò±Õ ¹à±â) > ¸ñÇ¥ ¹à±âex..100  ÇöÀç ¹à±â ex 89¸é µÑÀÇ Â÷ÀÌ·Î 11ÀÌ ³ª¿À¸ç
-        // ¹à±â°¡ 89ÀÏ ¶§ 11¸¸Å­À» ´õÇØ 100À¸·Î À¯ÁöÇÏ´Â ¹æ¹ıÀÓ.
+        //convertToë¥¼ ì‚¬ìš©í•´ì„œ -1ë¡œ ì›ë³¸ê³¼ ë™ì¼í•œ íƒ€ì…ì„ ì‚¬ìš©, 1ì„ ê³±í•˜ì—¬ í”½ì…€ ê°’ì„ ìœ ì§€í•œ ì±„ë¡œ
+        //adjustment ì¦‰ ëª©í‘œí•˜ëŠ” ë°ê¸°ë¥¼ ë§Œë“¤ê¸° ìœ„í•œ ê°’ì„ ë”í•¨.(ëª©í‘œ ë°ê¸° - í˜„ì¬ í‰ê·  ë°ê¸°) > ëª©í‘œ ë°ê¸°ex..100  í˜„ì¬ ë°ê¸° ex 89ë©´ ë‘˜ì˜ ì°¨ì´ë¡œ 11ì´ ë‚˜ì˜¤ë©°
+        // ë°ê¸°ê°€ 89ì¼ ë•Œ 11ë§Œí¼ì„ ë”í•´ 100ìœ¼ë¡œ ìœ ì§€í•˜ëŠ” ë°©ë²•ì„.
         fixbrightnessImg.convertTo(fixbrightnessImg, -1, 1, adjustment);
 
         Scalar meanValueAdjust = mean(fixbrightnessImg);
         double adjustedBrightness = meanValueAdjust[0];
         cout << "Adjust Average Brightness:" << adjustedBrightness << endl;
-        //ÀÌÁøÈ­
+        //ì´ì§„í™”
         threshold(fixbrightnessImg, thresh, 0, 255, THRESH_BINARY | THRESH_OTSU);
-        //¶óÀÎ °ËÃâ
+        //ë¼ì¸ ê²€ì¶œ
         int cnt = connectedComponentsWithStats(thresh, labels, stats, centroids);
 
         Mat connected = gray.clone();
