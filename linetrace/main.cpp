@@ -48,13 +48,13 @@ int main(void) {
         //이진화
         threshold(fixbrightnessImg, thresh, 165, 255, THRESH_BINARY);
         //라인 검출
-        
+
         //모폴로지 / 노이즈
         Mat morph;
         morphologyEx(thresh, morph, MORPH_OPEN, Mat(), Point(-1, -1));
         erode(morph, morph, Mat(), Point(-1, -1), 2);
         Mat displaymorph;
-        cvtColor(morph, displaymorph, COLOR_GRAY2BGR);
+        cvtColor(gray, displaymorph, COLOR_GRAY2BGR);
         static Point2d firstCenter(morph.cols / 2, morph.rows / 2);
         int cnt = connectedComponentsWithStats(morph, labels, stats, centroids);
         for (int i = 1; i < cnt; i++) {
@@ -64,7 +64,7 @@ int main(void) {
             Rect currentBoundingBox(p[0], p[1], p[2], p[3]);
             Point2d currentCenter(c[0], c[1]);
             int error = morph.cols / 2 - (int)c[0];
-            
+            rectangle(displaymorph, Rect(p[0], p[1], p[2], p[3]), Scalar(0, 255, 255), 2);
             double xdistance = targetCenter.x - c[0];
             if (!isTarget) {
                 targetCenter = firstCenter;
@@ -72,8 +72,8 @@ int main(void) {
             }
             else {
                 if ((xdistance <= 80 && xdistance >= -80)) {
-                    rectangle(displaymorph, Rect(p[0], p[1], p[2], p[3]), Scalar(0, 255, 255), 2);
-                    circle(displaymorph, targetCenter, 3, Scalar(255, 255, 0), 2);
+                    rectangle(displaymorph, Rect(p[0], p[1], p[2], p[3]), Scalar(0, 0, 255), 2);
+                    circle(displaymorph, targetCenter, 3, Scalar(0, 255, 0), 2);
                     circle(displaymorph, currentCenter, 5, Scalar(0, 255, 0), FILLED);
                     targetBoundingBox = currentBoundingBox;
                     targetCenter = currentCenter;
@@ -81,9 +81,9 @@ int main(void) {
                 }
 
             }
-            
+
         }
-        
+
 
 
         imshow("morph", displaymorph);
