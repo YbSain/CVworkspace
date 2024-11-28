@@ -54,7 +54,7 @@ int main(void) {
         morphologyEx(thresh, morph, MORPH_OPEN, Mat(), Point(-1, -1));
         erode(morph, morph, Mat(), Point(-1, -1), 2);
         Mat displaymorph;
-        cvtColor(gray, displaymorph, COLOR_GRAY2BGR);
+        cvtColor(morph, displaymorph, COLOR_GRAY2BGR);
         static Point2d firstCenter(morph.cols / 2, morph.rows / 2);
         int cnt = connectedComponentsWithStats(morph, labels, stats, centroids);
         for (int i = 1; i < cnt; i++) {
