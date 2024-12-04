@@ -121,11 +121,6 @@ Mat makethresh(Mat frame) {
 
     return Roiframe;
 }
-Mat regray(Mat Threshframe) {
-    Mat displaymorph;
-    cvtColor(Threshframe, displaymorph, COLOR_GRAY2BGR);
-    return displaymorph;
-}
 Mat Labeling(Mat Threshframe, Mat Grayframe) {
     Mat labels, stats, centroids;
     static Point2d firstCenter(Threshframe.cols / 2, Threshframe.rows / 2);
