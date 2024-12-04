@@ -83,10 +83,11 @@ int main(void) {
         if (ctrl_c_pressed) {
             break;
         }
-        diff = end1.tv_sec + end1.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
 
         usleep(30 * 1000);
         gettimeofday(&end1, NULL);
+        
+        diff = end1.tv_sec + end1.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
         cout << "lval : " << lval << "\trval : " << rval << "\ttime : " << diff << endl;
         cout << "error: " << error;
 
