@@ -18,9 +18,6 @@ Rect targetBoundingBox;
 Point2d targetCenter;
 bool isTarget = false;      //좌표확인
 int getError(Mat& thresh, Point& tmp_pt);
-
-
-
 bool mode = false;
 
 int main(void) {
