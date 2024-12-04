@@ -43,7 +43,7 @@ int main(void) {
     VideoWriter writer1(dst1, 0, (double)30, Size(640, 360), true);
     if (!writer1.isOpened()) { cerr << "Writer open failed!" << endl; return -1; }
     VideoWriter writer2(dst2, 0, (double)30, Size(640, 90), false);
-    if (!writer1.isOpened()) { cerr << "Writer open failed!" << endl; return -1; }
+    if (!writer2.isOpened()) { cerr << "Writer open failed!" << endl; return -1; }
 
     Mat frame;
     Dxl mx;
