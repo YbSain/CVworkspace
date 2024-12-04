@@ -1,6 +1,10 @@
 # 유튜브 링크 
+## 화면
 
-https://youtu.be/uKRLkhhVYKI
+[https://youtu.be/uKRLkhhVYKI](https://youtu.be/5Y556hC90vM?si=HEa8OffGyhtZt3Km)
+## 로봇 포함
+
+https://youtube.com/shorts/T-Y4QZZH1-U?si=685WmZXFb4cQ0NZB
 
 # 정리
 
