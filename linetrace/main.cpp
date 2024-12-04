@@ -18,7 +18,6 @@ Rect targetBoundingBox;
 Point2d targetCenter;
 bool isTarget = false;      //좌표확인
 int getError(Mat& thresh, Point& tmp_pt);
-bool mode = false;
 
 int main(void) {
     TickMeter tm;
@@ -47,14 +46,17 @@ int main(void) {
     if (!writer1.isOpened()) { cerr << "Writer open failed!" << endl; return -1; }
 
     Mat frame;
-    int lval = 0, rval = 0;
-
-    signal(SIGINT, ctrlc);
-
     Dxl mx;
+    bool mode = false;
+    int lval = 0, rval = 0;
+    signal(SIGINT, ctrlc);
     struct timeval start, end1;
     double diff;
 
+    if (!mx.open()) {
+        cout << "Dxl error" << endl;
+        return -1;
+    }
     while (true) {
         gettimeofday(&start, NULL);
         cap >> frame;
@@ -68,21 +70,15 @@ int main(void) {
 
         Point tmp_pt = targetCenter;
         displaymorph = Labeling(Threshframe, displaymorph);
-
-
         int error = getError(Threshframe, tmp_pt);
 
-        lval = 100 - 0.1 * error;
-        rval = -(100 + 0.1 * error);
-        if (!mx.open()) {
-            cout << "Dxl error" << endl;
-            return -1;
-        }
         if (mx.kbhit()) {
             char ch = mx.getch();
             if (ch == 'q')break;
             else if (ch == 's') mode = true;
         }
+        lval = 100 - 0.1 * error;
+        rval = -(100 + 0.1 * error);
         if (mode) mx.setVelocity(lval, rval);
         if (ctrl_c_pressed) {
             break;
