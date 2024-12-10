@@ -14,10 +14,14 @@ void ctrlc(int) {
 }
 Mat makethresh(Mat frame);
 Mat Labeling(Mat displaymorph, Mat Grayframe);
+Mat regray(Mat Threshframe);
 Rect targetBoundingBox;
 Point2d targetCenter;
 bool isTarget = false;      //좌표확인
+
+
 int getError(Mat& thresh, Point& tmp_pt);
+
 
 int main(void) {
     TickMeter tm;
@@ -28,38 +32,45 @@ int main(void) {
     //     nvvidconv flip-method=0 ! video/x-raw, 
     //     width=(int)640, height=(int)360, format=(string)BGRx ! 
     //     videoconvert ! video/x-raw, format=(string)BGR ! appsink";
+
+    // VideoCapture source(src, CAP_GSTREAMER);
+    // if(!source.isOpened()) { cerr << "Video Open Failed!!" << endl; return -1; }
     VideoCapture cap("7_lt_ccw_100rpm_in.mp4");
     if (!cap.isOpened()) { cerr << "video open failed!" << endl; return -1; }
 
     string dst1 = "appsrc ! videoconvert ! video/x-raw, format=BGRx ! \
             nvvidconv ! nvv4l2h264enc insert-sps-pps=true ! \
             h264parse ! rtph264pay pt=96 ! \
-            udpsink host=203.234.58.140 port=8001 sync=true";
-
+            udpsink host=203.234.58.170 port=8001 sync=false";
+            
     string dst2 = "appsrc ! videoconvert ! video/x-raw, format=BGRx ! \
             nvvidconv ! nvv4l2h264enc insert-sps-pps=true ! \
             h264parse ! rtph264pay pt=96 ! \
-            udpsink host=203.234.58.140 port=8002 sync=false";
+            udpsink host=203.234.58.170 port=8002 sync=false";
     VideoWriter writer1(dst1, 0, (double)30, Size(640, 360), true);
     if (!writer1.isOpened()) { cerr << "Writer open failed!" << endl; return -1; }
-    VideoWriter writer2(dst2, 0, (double)30, Size(640, 90), false);
+    VideoWriter writer2(dst2, 0, (double)30, Size(640, 90), true);
     if (!writer2.isOpened()) { cerr << "Writer open failed!" << endl; return -1; }
-
+    
     Mat frame;
+
     Dxl mx;
     bool mode = false;
     int lval = 0, rval = 0;
-    signal(SIGINT, ctrlc);
+    
     struct timeval start, end1;
     double diff;
 
+    signal(SIGINT, ctrlc);
     if (!mx.open()) {
         cout << "Dxl error" << endl;
         return -1;
     }
+
     while (true) {
         gettimeofday(&start, NULL);
         cap >> frame;
+        //source >> frame;
         if (frame.empty()) {
             break;
         }
@@ -68,8 +79,8 @@ int main(void) {
         Mat displaymorph = Threshframe.clone();
         cvtColor(displaymorph, displaymorph, COLOR_GRAY2BGR);
 
-        Point tmp_pt = targetCenter;
-        displaymorph = Labeling(Threshframe, displaymorph);
+        Point tmp_pt =targetCenter;
+        Mat result = Labeling(Threshframe, displaymorph);
         int error = getError(Threshframe, tmp_pt);
 
         if (mx.kbhit()) {
@@ -77,22 +88,20 @@ int main(void) {
             if (ch == 'q')break;
             else if (ch == 's') mode = true;
         }
+        if (ctrl_c_pressed) break;
         lval = 100 - 0.1 * error;
         rval = -(100 + 0.1 * error);
-        if (mode) mx.setVelocity(lval, rval);
-        if (ctrl_c_pressed) {
-            break;
-        }
-
+        if (mode) mx.setVelocity(lval, rval);    
+        
+        
         usleep(30 * 1000);
         gettimeofday(&end1, NULL);
-        
         diff = end1.tv_sec + end1.tv_usec / 1000000.0 - start.tv_sec - start.tv_usec / 1000000.0;
         cout << "lval : " << lval << "\trval : " << rval << "\ttime : " << diff << endl;
-        cout << "error: " << error;
-
+        cout << "error: " << error << endl;
+        
         writer1 << frame;
-        writer2 << displaymorph;
+        writer2 << result;
     }
     mx.close();
     return 0;
@@ -132,7 +141,7 @@ Mat Labeling(Mat Threshframe, Mat Grayframe) {
         if (p[4] < 20) continue;
         Rect currentBoundingBox(p[0], p[1], p[2], p[3]);
         Point2d currentCenter(c[0], c[1]);
-
+        
         rectangle(Grayframe, Rect(p[0], p[1], p[2], p[3]), Scalar(0, 255, 255), 2);
         double xdistance = targetCenter.x - c[0];
         if (!isTarget) {
